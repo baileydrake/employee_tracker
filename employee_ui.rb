@@ -2,6 +2,7 @@ require 'active_record'
 require './lib/employee'
 require './lib/project'
 require './lib/division'
+require './lib/contribution'
 
 
 database_configuration = YAML::load(File.open('./db/config.yml'))
@@ -11,7 +12,7 @@ ActiveRecord::Base.establish_connection(development_configuration)
 def menu
   choice = nil
   until choice == 'x'
-    puts '1: add division, 2: add employee, 3: list employees, 4: add project , 5: list projects, 6: add project to employee x: exit'
+    puts '1: add division, 2: add employee, 3: list employees, 4: add project , 5: list projects, 6: add project to employee, x: exit'
     choice = gets.chomp
     case choice
     when '1'
@@ -68,25 +69,25 @@ def add_project
 end
 
 def add_project_to_employee
-  Project.all.each do |project|
-   puts project.name
-  end
+  # Project.all.each { |project| puts project.name }
   puts "which employee do you want to add a project too?"
   list_employees
   employee_choice = gets.chomp
   employee = Employee.all.where(:name => employee_choice).pop
   puts "which project to add"
-  list_projects
+  Project.all.each { |project| puts project.name }
   project_choice = gets.chomp
   project = Project.all.where(:name => project_choice).pop
-  employee.update(:projects => [project])
-
-
+  puts "what is the employees contribution?"
+  contribution_name =gets.chomp
+  Contribution.create(:project_id => project.id, :employee_id => employee.id, :name => contribution_name)
 end
 
 def list_projects
   Project.all.each do |project|
     puts project.name
+    project.contributions.each {|contribution| puts contribution.employee_id}
+    puts "\n"
   end
 end
 

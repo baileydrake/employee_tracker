@@ -1,3 +1,5 @@
 class Employee < ActiveRecord::Base
-  has_and_belongs_to_many :projects
+  belongs_to :division
+  has_many :contributions
+  has_many :projects, through: :contributions
 end

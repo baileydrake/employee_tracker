@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324205010) do
+ActiveRecord::Schema.define(version: 20140324225244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contributions", force: true do |t|
+    t.integer  "employee_id"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "name"
+  end
 
   create_table "divisions", force: true do |t|
     t.string   "name"
@@ -27,11 +35,6 @@ ActiveRecord::Schema.define(version: 20140324205010) do
     t.integer  "division_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "proj_emps", force: true do |t|
-    t.integer "employee_id"
-    t.integer "project_id"
   end
 
   create_table "projects", force: true do |t|
